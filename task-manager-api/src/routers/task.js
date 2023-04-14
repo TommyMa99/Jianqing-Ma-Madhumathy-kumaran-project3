@@ -5,20 +5,23 @@ const router = new express.Router()
 const multer = require('multer')
 const sharp = require('sharp')
 
-router.post('/tasks', auth, async (req, res) => {
+//to create a new tweet after loggin in.
+router.post('/createtweet', auth, async (req, res) => {
     const task = new Task({
         ...req.body,
         owner: req.user._id
     })
 
     try {
-        await task.save()
-        res.status(201).send(task)
+        const saved_tweet = await task.save()
+        res.status(201).send(saved_tweet)
     } catch (e) {
         res.status(400).send(e)
     }
 })
 
+
+//to get a tweet after loggin in.
 router.get('/tasks/:userId', async (req, res) => {
     const sort = {}
     const match = { owner: req.params.userId }
@@ -44,6 +47,7 @@ router.get('/tasks/:userId', async (req, res) => {
     }
 })
 
+//get all the tweets.
 router.get('/tasks', async (req, res) => {
     const match = {}
     const sort = {}
@@ -108,6 +112,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     }
 })
 
+//delete a tweet.
 router.delete('/tasks/:id', auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
@@ -120,6 +125,18 @@ router.delete('/tasks/:id', auth, async (req, res) => {
     } catch (e) {
         res.status(500).send(e)
     }
+})
+
+router.get('/explore', auth, async (req, res) => {
+    try {
+        const getExploreTweets = await Task.find({
+          likes: { $exists: true },
+        }).sort({ likes: -1 });
+    
+        res.status(200).json(getExploreTweets);
+      } catch (err) {
+        handleError(500, err);
+      }
 })
 
 const upload = multer({

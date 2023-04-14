@@ -1,5 +1,10 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const bycrypt = require('bcryptjs')
+
+ 
+  
+ 
 
 const auth = async (req, res, next) => {
     try {

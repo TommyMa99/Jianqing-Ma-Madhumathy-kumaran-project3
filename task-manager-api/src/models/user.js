@@ -9,11 +9,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    name: {
+    // Profile username
+    username: {
         type: String,
         required: true,
+        unique: true,
         trim: true
     },
+    // profile username
     email: {
         type: String,
         unique: true,
@@ -26,6 +29,17 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    profileImage: {
+        type: String,
+    },
+    following: {
+        type: Array,
+        default: []
+    },
+    followers: {
+        type: Array,
+        default: []
+    },
     age: {
         type: Number,
         default: 0,
@@ -35,6 +49,7 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    // user password
     password: {
         type: String,
         required: true,
