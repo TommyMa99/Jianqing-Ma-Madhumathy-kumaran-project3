@@ -1,11 +1,11 @@
 import React from "react";
-
- import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
   // const [email, setEmail] = useState("");
+  const backend_url = 'http://localhost:3001';
 
   
   const navigate = useNavigate();
@@ -22,22 +22,22 @@ const Signin = () => {
   //   }
   // };
 
-  // const handleSignup = async (e) => {
-  //   e.preventDefault();
-  //   dispatch(loginStart());
+  const handleSignup = async (e) => {
+    // e.preventDefault();
+    // dispatch(loginStart());
 
-  //   try {
-  //     const res = await axios.post("/auth/signup", {
-  //       username,
-  //       email,
-  //       password,
-  //     });
-  //     dispatch(loginSuccess(res.data));
-  //     navigate("/");
-  //   } catch (err) {
-  //     dispatch(loginFailed());
-  //   }
-  // };
+    try {
+      // const res = await axios.post("http://localhost:3001/auth/signup", {
+      //   username,
+      //   email,
+      //   password,
+      // });
+      // dispatch(loginSuccess(res.data));
+      // navigate("/");
+    } catch (err) {
+      // dispatch(loginFailed());
+    }
+  };
 
   return (
     <form className="bg-gray-200 flex flex-col py-12 px-8 rounded-lg w-8/12 md:w-6/12 mx-auto gap-10">
@@ -86,7 +86,7 @@ const Signin = () => {
       />
 
       <button
-        // onClick={handleSignup}
+        onClick={handleSignup}
         className="text-xl py-2 rounded-full px-4 bg-blue-500 text-white"
         type="submit"
       >
