@@ -74,6 +74,8 @@ router.get('/tasks', async (req, res) => {
       }
 })
 
+
+
 // router.get('/tasks/:id', auth, async (req, res) => {
 //     const _id = req.params.id
 
@@ -127,7 +129,7 @@ router.delete('/tasks/:id', auth, async (req, res) => {
     }
 })
 
-router.get('/explore', auth, async (req, res) => {
+router.get('/explore', async (req, res) => {
     try {
         const getExploreTweets = await Task.find({
           likes: { $exists: true },
