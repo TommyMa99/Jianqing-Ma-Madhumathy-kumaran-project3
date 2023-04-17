@@ -1,41 +1,49 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState} from "react";
+import axios from "axios";
+
+
+ import { useNavigate } from "react-router-dom";
+ import { useDispatch, useSelector } from "react-redux";
+
+ import { loginStart, loginSuccess, loginFailed } from "../../redux/userSlice";
+
+ 
 
 const Signin = () => {
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  const backend_url = 'http://localhost:3001';
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   dispatch(loginStart());
-  //   try {
-  //     const res = await axios.post("/auth/signin", { username, password });
-  //     dispatch(loginSuccess(res.data));
-  //     navigate("/");
-  //   } catch (err) {
-  //     dispatch(loginFailed());
-  //   }
-  // };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const res = await axios.post("/users/login", { email, password });
+      dispatch(loginSuccess(res.data));
+      navigate("/");
+    } catch (err) {
+      dispatch(loginFailed());
+    }
+  };
 
   const handleSignup = async (e) => {
-    // e.preventDefault();
-    // dispatch(loginStart());
+    e.preventDefault();
+    dispatch(loginStart());
 
     try {
-      // const res = await axios.post("http://localhost:3001/auth/signup", {
-      //   username,
-      //   email,
-      //   password,
-      // });
-      // dispatch(loginSuccess(res.data));
-      // navigate("/");
+      const res = await axios.post("/signup", {
+        username,
+        email,
+        password,
+      });
+      dispatch(loginSuccess(res.data));
+      navigate("/");
     } catch (err) {
-      // dispatch(loginFailed());
+      dispatch(loginFailed());
     }
   };
 
@@ -44,13 +52,13 @@ const Signin = () => {
       <h2 className="text-3xl font-bold text-center">Sign in to Twitter</h2>
 
       <input
-        // onChange={(e) => setUsername(e.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
         type="text"
-        placeholder="username"
+        placeholder="email"
         className="text-xl py-2 rounded-full px-4"
       />
       <input
-        // onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
         type="password"
         placeholder="password"
         className="text-xl py-2 rounded-full px-4"
@@ -58,7 +66,7 @@ const Signin = () => {
 
       <button
         className="text-xl py-2 rounded-full px-4 bg-blue-500 text-white"
-        // onClick={handleLogin}
+        onClick={handleLogin}
       >
         Sign in
       </button>
@@ -66,20 +74,20 @@ const Signin = () => {
       <p className="text-center text-xl">Don't have an account?</p>
 
       <input
-        // onChange={(e) => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
         type="text"
         placeholder="username"
         className="text-xl py-2 rounded-full px-4"
       />
       <input
-        // onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
         type="email"
         placeholder="email"
         required
         className="text-xl py-2 rounded-full px-4"
       />
       <input
-        // onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
         type="password"
         placeholder="password"
         className="text-xl py-2 rounded-full px-4"
