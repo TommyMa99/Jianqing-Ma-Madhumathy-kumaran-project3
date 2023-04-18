@@ -4,19 +4,34 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {useSelector} from 'react-redux'
+import {useDispatch} from'react-redux'
+import axios from "axios";
+import { logout , loginSuccess, loginStart, loginFailed} from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const loggedIn = useSelector(
     (state) => state.user.currentUser
   )
-  function handleLogin() {
-    // perform login activities
-  }
 
-  function handleLogout() {
-    // perform logout activities
-  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    navigate("/signin");
+  };
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate("/signin");
+  };
+
+  console.log("user",loggedIn.user.username);
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 my-5 justify-center">
       <div className="mx-auto md:mx-0">
