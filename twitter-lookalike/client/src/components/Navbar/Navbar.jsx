@@ -3,18 +3,18 @@ import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import {useSelector} from 'react-redux'
 
 const Navbar = () => {
   
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const location = useLocation();
+  const loggedIn = useSelector(
+    (state) => state.user.currentUser
+  )
   function handleLogin() {
-    setIsLoggedIn(true);
     // perform login activities
   }
 
   function handleLogout() {
-    setIsLoggedIn(false);
     // perform logout activities
   }
   return (
@@ -38,9 +38,8 @@ const Navbar = () => {
       <div className="px-0 md:px-6 mx-auto">
         <div className="flex justify-between">
           <div>
-          {location.pathname !== "/signin" && (
             <div>
-              {isLoggedIn ? (
+              {loggedIn != null ? (
                   <button onClick={handleLogout} className="border border-2 border-black bg-white-500 px-4 py-2 text-black rounded-full">
                     Logout
                   </button>
@@ -52,7 +51,6 @@ const Navbar = () => {
                   </Link>
               )}
             </div>
-          )}
           </div>
         </div>
       </div>

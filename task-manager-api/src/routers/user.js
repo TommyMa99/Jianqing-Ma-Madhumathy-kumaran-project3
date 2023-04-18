@@ -79,7 +79,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 })
 
 // Find users by id
-router.get("/find/:id", auth, async (req, res) => {
+router.get("/find/:id", async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         res.status(200).json(user);
