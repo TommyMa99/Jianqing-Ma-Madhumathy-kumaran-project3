@@ -2,16 +2,19 @@ import React from "react";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
 import Tweet from "../../components/Tweet/Tweet";
 import RightSidebar from "../../components/RightSidebar/RightSidebar";
-// import Signin from "../Signin/Signin";
+import Explore from "../Explore/Explore";
 
-// import { useSelector } from "react-redux";
+ import { useSelector } from "react-redux";
+import Signin from "../Signin/Signin";
 
 const Home = () => {
-  // const { currentUser } = useSelector((state) => state.user);
-
+  const { currentUser } = useSelector((state) => state.user);
+  
+  console.log("user", currentUser);
   return (
-    <>
-      
+    <>  
+    
+       
         <div className="grid grid-cols-1 md:grid-cols-4">
           <div className="px-6">
             <LeftSidebar />
@@ -23,6 +26,7 @@ const Home = () => {
             <RightSidebar />
           </div>
         </div>
+      
       
     </>
   );

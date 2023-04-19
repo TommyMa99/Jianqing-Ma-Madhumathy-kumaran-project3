@@ -22,9 +22,9 @@ router.post('/createtweet', auth, async (req, res) => {
 
 
 //to get a tweet after loggin in.
-router.get('/tasks/:userId', async (req, res) => {
+router.get('/tasks/:id', async (req, res) => {
     const sort = {}
-    const match = { owner: req.params.userId }
+    const match = { owner: req.params.id }
 
     if (req.query.sortBy) {
         const parts = req.query.sortBy.split(':')

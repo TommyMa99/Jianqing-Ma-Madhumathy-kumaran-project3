@@ -31,7 +31,7 @@ const Navbar = () => {
     navigate("/signin");
   };
 
-  console.log("user",loggedIn.user.username);
+  console.log("user",loggedIn);
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 my-5 justify-center">
       <div className="mx-auto md:mx-0">
