@@ -1,5 +1,7 @@
+
 import React, { useState} from "react";
 import axios from "axios";
+
 
 
  import { useNavigate } from "react-router-dom";
@@ -9,14 +11,22 @@ import axios from "axios";
 
  
 
+
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const backend_url = 'http://localhost:3001';
+
 
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,6 +39,7 @@ const Signin = () => {
       dispatch(loginFailed());
     }
   };
+
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -47,12 +58,15 @@ const Signin = () => {
     }
   };
 
+
   return (
     <form className="bg-gray-200 flex flex-col py-12 px-8 rounded-lg w-8/12 md:w-6/12 mx-auto gap-10">
       <h2 className="text-3xl font-bold text-center">Sign in to Twitter</h2>
 
       <input
+
         onChange={(e) => setEmail(e.target.value)}
+
         type="text"
         placeholder="email"
         className="text-xl py-2 rounded-full px-4"
