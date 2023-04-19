@@ -1,13 +1,17 @@
-import React from "react";
-<<<<<<< Updated upstream
+
+import React, { useState} from "react";
+import axios from "axios";
+
+
 
  import { useNavigate } from "react-router-dom";
+ import { useDispatch, useSelector } from "react-redux";
 
-const Signin = () => {
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-=======
+ import { loginStart, loginSuccess, loginFailed } from "../../redux/userSlice";
+
+ 
+
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -16,17 +20,19 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const backend_url = 'http://localhost:3001';
->>>>>>> Stashed changes
+
 
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  
+
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/users/login", { username, password });
+      const res = await axios.post("/users/login", { email, password });
       dispatch(loginSuccess(res.data));
       navigate("/");
     } catch (err) {
@@ -34,24 +40,7 @@ const Signin = () => {
     }
   };
 
-<<<<<<< Updated upstream
-  // const handleSignup = async (e) => {
-  //   e.preventDefault();
-  //   dispatch(loginStart());
 
-  //   try {
-  //     const res = await axios.post("/auth/signup", {
-  //       username,
-  //       email,
-  //       password,
-  //     });
-  //     dispatch(loginSuccess(res.data));
-  //     navigate("/");
-  //   } catch (err) {
-  //     dispatch(loginFailed());
-  //   }
-  // };
-=======
   const handleSignup = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
@@ -68,16 +57,18 @@ const Signin = () => {
       dispatch(loginFailed());
     }
   };
->>>>>>> Stashed changes
+
 
   return (
     <form className="bg-gray-200 flex flex-col py-12 px-8 rounded-lg w-8/12 md:w-6/12 mx-auto gap-10">
       <h2 className="text-3xl font-bold text-center">Sign in to Twitter</h2>
 
       <input
-        onChange={(e) => setUsername(e.target.value)}
+
+        onChange={(e) => setEmail(e.target.value)}
+
         type="text"
-        placeholder="username"
+        placeholder="email"
         className="text-xl py-2 rounded-full px-4"
       />
       <input
@@ -117,7 +108,7 @@ const Signin = () => {
       />
 
       <button
-        // onClick={handleSignup}
+        onClick={handleSignup}
         className="text-xl py-2 rounded-full px-4 bg-blue-500 text-white"
         type="submit"
       >
