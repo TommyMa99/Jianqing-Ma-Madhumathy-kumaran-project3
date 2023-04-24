@@ -15,7 +15,10 @@ router.post('/signup', async (req, res) => {
         await user.save()
         sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
-        res.status(201).send({user, token})
+        const { password, ...othersData } = user._doc;
+        res.cookie("access_token", token, {
+          httpOnly: true,
+        }).status(201).send({user, token}).json(othersData);
     } catch (e) {
         res.status(400).send(e)
     }
@@ -49,7 +52,11 @@ router.post('/users/login', async (req, res, next) => {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         if(!user)  return next(new Error('Incorrect email or password'))
-        res.send({ user, token })
+        const { password, ...othersData } = user._doc;
+
+        res.cookie("access_token", token, {
+          httpOnly: true,
+        }).send({ user, token }).json(othersData);
     } catch (e) {
         res.status(400).send()
     }

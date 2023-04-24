@@ -13,11 +13,13 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Tweet from "../../components/Tweet/Tweet";
 
+
 import { following } from "../../redux/userSlice";
+import ProfileTweet from "../../components/ProfileTweet/ProfileTweet";
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
-  const { currentUser } = useSelector((state) => state.user.currentUser);
+  const { currentUser } = useSelector((state) => state.user);
   const [userTweets, setUserTweets] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
 
@@ -38,7 +40,7 @@ const Profile = () => {
     };
 
     fetchData();
-  }, [currentUser.user, id]);
+  }, [currentUser, id]);
 
   const handleFollow = async () => {
     if (!currentUser.following.includes(id)) {
@@ -63,7 +65,7 @@ const Profile = () => {
     }
   };
 
-  console.log("user",currentUser.user._id)
+  console.log("user",currentUser)
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-4">
@@ -101,14 +103,9 @@ const Profile = () => {
             )}
           </div>
           <div className="mt-6">
-            {userTweets &&
-              userTweets.map((tweet) => {
-                return (
-                  <div className="p-2" key={tweet._id}>
-                    <Tweet tweet={tweet} setData={setUserTweets} />
-                  </div>
-                );
-              })}
+            
+                    <ProfileTweet  />
+                  
           </div>
         </div>
 

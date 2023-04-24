@@ -32,18 +32,22 @@ const LeftSidebar = () => {
             <p>Explore</p>
           </div>
         </Link>
-        <Link to={`/profile/${currentUser._id}`}>
+        {currentUser != null ? (
+        <Link to={`/profile/${currentUser.user._id}`}>
           <div className="flex items-center space-x-6 px-2 py-2 hover:bg-slate-200 rounded-full cursor-pointer">
             <PersonIcon fontSize="large" />
             <p>Profile</p>
           </div>
         </Link>
+        ) : (null) }
       </div>
       <div className="flex justify-between">
+      {currentUser != null ? (
         <div>
-          <p className="font-bold">{currentUser._id}</p>
-          <p className="font-bold">@{currentUser._id}</p>
+          <p className="font-bold">{currentUser.user.username}</p>
+          <p className="font-bold">@{currentUser.user.username}</p>
         </div>
+      ): (null) }
         <div>
           <Link to="signin">
             <button
