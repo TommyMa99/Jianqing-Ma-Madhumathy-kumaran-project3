@@ -1,8 +1,12 @@
  import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CTweet from "./CTweet";
+import { useSelector } from "react-redux";
+
 
 const Tweet = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     async function fetchPosts() {
@@ -25,7 +29,8 @@ const Tweet = () => {
     <div>
       
         <p className="font-bold pl-2 my-2">Explore</p>
-        <CTweet />
+        {currentUser != null ? (
+        <CTweet /> ) :( null)}
       
 
       {/* <form className="border-b-2 pb-6">

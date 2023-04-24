@@ -6,12 +6,9 @@ const multer = require('multer')
 const sharp = require('sharp')
 
 //to create a new tweet after loggin in.
-router.post('/createtweet' ,auth , async (req, res) => {
-    const task = new Task({
-        ...req.body,
-        owner: req.user._id
-    })
-
+router.post('/createtweet'  , async (req, res) => {
+    const task = new Task(req.body);
+    console.log(task);
     try {
         const saved_tweet = await task.save()
         res.status(201).send(saved_tweet)

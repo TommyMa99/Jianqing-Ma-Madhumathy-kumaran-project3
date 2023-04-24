@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import CTweet from "../Tweet/CTweet";
 
 
 const ProfileTweet = () => {
@@ -29,8 +30,8 @@ const ProfileTweet = () => {
 
   return (
     <div>
-      
-        <p className="font-bold pl-2 my-2">username</p>
+      <CTweet />
+        {/* <p className="font-bold pl-2 my-2">username</p>
       
 
       <form className="border-b-2 pb-6">
@@ -43,7 +44,7 @@ const ProfileTweet = () => {
         <button className="bg-blue-500 text-white py-2 px-4 rounded-full ml-auto">
           Tweet
         </button>
-      </form>
+      </form> */}
       <div className="content-all-tweet">
         <div className="tweet">
           {posts.map(post => (

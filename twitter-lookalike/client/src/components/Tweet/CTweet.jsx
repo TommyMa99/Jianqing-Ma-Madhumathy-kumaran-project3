@@ -14,7 +14,7 @@ const CTweet = () => {
     
     try {
       const submitTweet = await axios.post("/createtweet", {
-        userId: currentUser.user._id,
+        owner: currentUser.user._id,
         description: tweetText,
       });
       console.log(submitTweet);
