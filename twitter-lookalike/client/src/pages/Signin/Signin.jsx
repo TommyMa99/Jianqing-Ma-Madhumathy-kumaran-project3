@@ -17,8 +17,7 @@ const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const backend_url = 'http://localhost:3001';
-
+  const backend_url = 'http://localhost:3000';
 
   
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const Signin = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/users/login", { email, password });
+      const res = await axios.post(backend_url+"/users/login", { email, password });
       dispatch(loginSuccess(res.data));
       navigate("/");
     } catch (err) {
@@ -44,7 +43,7 @@ const Signin = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post("/signup", {
+      const res = await axios.post(backend_url+"/signup", {
         username,
         email,
         password,
