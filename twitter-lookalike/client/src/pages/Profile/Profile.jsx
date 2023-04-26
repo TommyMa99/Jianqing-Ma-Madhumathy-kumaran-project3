@@ -25,12 +25,13 @@ const Profile = () => {
 
   const { id } = useParams();
   const dispatch = useDispatch();
+  const backend_url = "http://localhost:3000";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userTweets = await axios.get(`/tasks/${id}`);
-        const userProfile = await axios.get(`/find/${id}`);
+        const userTweets = await axios.get(backend_url+`/tasks/${id}`);
+        const userProfile = await axios.get(backend_url+`/find/${id}`);
 
         setUserTweets(userTweets.data);
         setUserProfile(userProfile.data);
@@ -45,7 +46,7 @@ const Profile = () => {
   const handleFollow = async () => {
     if (!currentUser.following.includes(id)) {
       try {
-        const follow = await axios.put(`/follow/${id}`, {
+        const follow = await axios.put(backend_url+`/follow/${id}`, {
           id: currentUser.user._id,
         });
         dispatch(following(id));
@@ -54,7 +55,7 @@ const Profile = () => {
       }
     } else {
       try {
-        const unfollow = await axios.put(`/unfollow/${id}`, {
+        const unfollow = await axios.put(backend_url+`/unfollow/${id}`, {
           id: currentUser.user._id,
         });
 

@@ -7,14 +7,14 @@ import { Link } from "react-router-dom";
 
 const Tweet = () => {
   const { currentUser } = useSelector((state) => state.user);
-
+  const backend_url = "http://localhost:3000";
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     async function fetchPosts() {
-      const response = await axios.get('/tasks?sortBy=createdAt:desc');
+      const response = await axios.get(backend_url+'/tasks?sortBy=createdAt:desc');
       const postsWithUserInfo = await Promise.all(
         response.data.map(async post => {
-          const userResponse = await axios.get(`/find/${post.owner}`);
+          const userResponse = await axios.get(backend_url+`/find/${post.owner}`);
           return {
             ...post,
             user: userResponse.data,
