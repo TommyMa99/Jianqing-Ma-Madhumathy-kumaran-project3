@@ -25,7 +25,7 @@ const Profile = () => {
 
   const { id } = useParams();
   const dispatch = useDispatch();
-  const backend_url = "http://localhost:3000";
+  const backend_url = "https://twitter5610-backend.herokuapp.com";
 
   useEffect(() => {
     const fetchData = async () => {

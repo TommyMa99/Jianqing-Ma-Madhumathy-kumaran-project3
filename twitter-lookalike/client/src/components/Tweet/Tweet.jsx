@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Tweet = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const backend_url = "http://localhost:3000";
+  const backend_url = "https://twitter5610-backend.herokuapp.com";
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     async function fetchPosts() {

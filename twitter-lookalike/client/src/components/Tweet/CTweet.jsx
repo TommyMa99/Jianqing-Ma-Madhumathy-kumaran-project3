@@ -8,7 +8,7 @@ const CTweet = () => {
   const [tweetText, setTweetText] = useState("");
 
   const { currentUser, token } = useSelector((state) => state.user);
-  const backend_url = "http://localhost:3000";
+  const backend_url = "https://twitter5610-backend.herokuapp.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

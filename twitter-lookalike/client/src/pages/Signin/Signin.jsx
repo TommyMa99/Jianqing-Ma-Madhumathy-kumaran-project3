@@ -17,7 +17,7 @@ const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const backend_url = 'http://localhost:3000';
+  const backend_url = 'https://twitter5610-backend.herokuapp.com';
   
   const navigate = useNavigate();
   const dispatch = useDispatch();

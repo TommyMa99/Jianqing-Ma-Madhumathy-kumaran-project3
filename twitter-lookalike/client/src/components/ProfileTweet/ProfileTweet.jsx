@@ -9,7 +9,7 @@ const ProfileTweet = () => {
     const { currentUser, token } = useSelector((state) => state.user);
     const [posts, setPosts] = useState([]);
     const { id } = useParams();
-    const backend_url = "http://localhost:3000";
+    const backend_url = "https://twitter5610-backend.herokuapp.com";
   const dispatch = useDispatch();
   const isCurrUser = id === currentUser?.user?._id
 

@@ -18,7 +18,7 @@ router.post('/signup', async (req, res) => {
         const { password, ...othersData } = user._doc;
         res.cookie("access_token", token, {
           httpOnly: true,
-        }).status(201).send({user, token}).json(othersData);
+        }).status(201).json({ user, token, othersData });
     } catch (e) {
         res.status(400).send(e)
     }
@@ -56,7 +56,7 @@ router.post('/users/login', async (req, res, next) => {
 
         res.cookie("access_token", token, {
           httpOnly: true,
-        }).send({ user, token }).json(othersData);
+        }).status(201).json({ user, token, othersData });
     } catch (e) {
         res.status(400).send()
     }
