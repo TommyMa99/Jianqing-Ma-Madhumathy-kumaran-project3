@@ -17,7 +17,7 @@ router.post('/signup', async (req, res) => {
         const token = await user.generateAuthToken()
         const { password, ...othersData } = user._doc;
         res.cookie("access_token", token, {
-          httpOnly: true,
+          httpOnly: false,
         }).status(201).send({user, token}).json(othersData);
     } catch (e) {
         res.status(400).send(e)
@@ -55,7 +55,7 @@ router.post('/users/login', async (req, res, next) => {
         const { password, ...othersData } = user._doc;
 
         res.cookie("access_token", token, {
-          httpOnly: true,
+          httpOnly: false,
         }).send({ user, token }).json(othersData);
     } catch (e) {
         res.status(400).send()
