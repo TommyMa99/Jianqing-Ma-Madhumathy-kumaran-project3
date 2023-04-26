@@ -7,19 +7,23 @@ import axios from "axios";
 const CTweet = () => {
   const [tweetText, setTweetText] = useState("");
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, token } = useSelector((state) => state.user);
   const backend_url = "http://localhost:3000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
-      const submitTweet = await axios.post(backend_url+"/createtweet", {
-        owner: currentUser.user._id,
-        description: tweetText,
-      });
-      console.log(submitTweet);
-      window.location.reload(false);
+      if (token != null) {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const submitTweet = await axios.post(backend_url+"/createtweet", {
+          owner: currentUser.user._id,
+          description: tweetText,
+        }, config);
+        window.location.reload(false);
+      }
     } catch (err) {
       console.log(err);
     }

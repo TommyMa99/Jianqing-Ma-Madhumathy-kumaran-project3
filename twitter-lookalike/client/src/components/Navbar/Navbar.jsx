@@ -13,7 +13,7 @@ const Navbar = () => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+  const { currentUser } = useSelector((state) => state.user);
   const loggedIn = useSelector(
     (state) => state.user.currentUser
   )
@@ -28,7 +28,7 @@ const Navbar = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     dispatch(logout());
-    navigate("/signin");
+    navigate("/");
   };
 
   console.log("user",loggedIn);
@@ -67,6 +67,13 @@ const Navbar = () => {
               )}
             </div>
           </div>
+          <div>
+              {currentUser != null ? (
+                  <div>
+                    <p className="font-bold text-md text-gray-800">Welcome {currentUser.user.username}!</p>
+                  </div>
+                ): (null) }
+            </div>
         </div>
       </div>
     </div>

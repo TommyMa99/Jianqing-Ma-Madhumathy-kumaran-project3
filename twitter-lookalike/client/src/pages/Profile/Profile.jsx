@@ -32,7 +32,7 @@ const Profile = () => {
       try {
         const userTweets = await axios.get(backend_url+`/tasks/${id}`);
         const userProfile = await axios.get(backend_url+`/find/${id}`);
-
+        console.log(userTweets);
         setUserTweets(userTweets.data);
         setUserProfile(userProfile.data);
       } catch (err) {
@@ -43,30 +43,29 @@ const Profile = () => {
     fetchData();
   }, [currentUser, id]);
 
-  const handleFollow = async () => {
-    if (!currentUser.following.includes(id)) {
-      try {
-        const follow = await axios.put(backend_url+`/follow/${id}`, {
-          id: currentUser.user._id,
-        });
-        dispatch(following(id));
-      } catch (err) {
-        console.log("error", err);
-      }
-    } else {
-      try {
-        const unfollow = await axios.put(backend_url+`/unfollow/${id}`, {
-          id: currentUser.user._id,
-        });
+  // const handleFollow = async () => {
+  //   if (!currentUser.following.includes(id)) {
+  //     try {
+  //       const follow = await axios.put(backend_url+`/follow/${id}`, {
+  //         id: currentUser.user._id,
+  //       });
+  //       dispatch(following(id));
+  //     } catch (err) {
+  //       console.log("error", err);
+  //     }
+  //   } else {
+  //     try {
+  //       const unfollow = await axios.put(backend_url+`/unfollow/${id}`, {
+  //         id: currentUser.user._id,
+  //       });
 
-        dispatch(following(id));
-      } catch (err) {
-        console.log("error", err);
-      }
-    }
-  };
+  //       dispatch(following(id));
+  //     } catch (err) {
+  //       console.log("error", err);
+  //     }
+  //   }
+  // };
 
-  console.log("user",currentUser)
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-4">
@@ -80,28 +79,6 @@ const Profile = () => {
               alt="Profile Picture"
               className="w-12 h-12 rounded-full"
             />
-            {currentUser.user._id === id ? (
-              <button
-                className="px-4 -y-2 bg-blue-500 rounded-full text-white"
-                onClick={() => setOpen(true)}
-              >
-                Edit Profile
-              </button>
-            ) : currentUser.following.includes(id) ? (
-              <button
-                className="px-4 -y-2 bg-blue-500 rounded-full text-white"
-                onClick={handleFollow}
-              >
-                Following
-              </button>
-            ) : (
-              <button
-                className="px-4 -y-2 bg-blue-500 rounded-full text-white"
-                onClick={handleFollow}
-              >
-                Follow
-              </button>
-            )}
           </div>
           <div className="mt-6">
             
@@ -114,7 +91,6 @@ const Profile = () => {
           <RightSidebar />
         </div>
       </div>
-      {open && <EditProfile setOpen={setOpen} />}
     </>
   );
 };

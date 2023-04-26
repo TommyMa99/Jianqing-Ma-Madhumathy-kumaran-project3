@@ -41,24 +41,6 @@ const LeftSidebar = () => {
         </Link>
         ) : (null) }
       </div>
-      <div className="flex justify-between">
-      {currentUser != null ? (
-        <div>
-          <p className="font-bold">{currentUser.user.username}</p>
-          <p className="font-bold">@{currentUser.user.username}</p>
-        </div>
-      ): (null) }
-        <div>
-          <Link to="signin">
-            <button
-              className="bg-red-500 px-4 py-2 text-white rounded-full"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </Link>
-        </div>
-      </div>
     </div>
   );
 };

@@ -6,12 +6,15 @@ const multer = require('multer')
 const sharp = require('sharp')
 
 //to create a new tweet after loggin in.
-router.post('/createtweet'  , async (req, res) => {
-    const task = new Task(req.body);
-    console.log(task);
+router.post('/createtweet', auth, async (req, res) => {
+    const task = new Task({
+        ...req.body,
+        owner: req.user._id
+    })
+
     try {
-        const saved_tweet = await task.save()
-        res.status(201).send(saved_tweet)
+        await task.save()
+        res.status(201).send(task)
     } catch (e) {
         res.status(400).send(e)
     }
@@ -112,7 +115,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 })
 
 //delete a tweet.
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id })
 

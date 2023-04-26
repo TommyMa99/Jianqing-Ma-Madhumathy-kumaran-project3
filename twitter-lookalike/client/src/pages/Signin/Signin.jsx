@@ -18,11 +18,9 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const backend_url = 'http://localhost:3000';
-
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   
 
   const handleLogin = async (e) => {
