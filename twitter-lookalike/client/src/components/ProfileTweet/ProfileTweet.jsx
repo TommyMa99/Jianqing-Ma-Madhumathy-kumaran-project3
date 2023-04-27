@@ -43,6 +43,21 @@ const ProfileTweet = () => {
       console.log(err);
     }
   }
+
+  async function updatePost(post){
+    try {
+      if (token != null) {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const updateTweet = await axios.patch(backend_url+"/tasks/"+post._id, config);
+
+        window.location.reload(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <div>
       {isCurrUser ? (
@@ -93,7 +108,7 @@ const ProfileTweet = () => {
               </div>
               <div>
                 {isCurrUser ? (
-                  <button className="px-4 -y-2 bg-yellow-500 rounded-full text-white">
+                  <button className="px-4 -y-2 bg-yellow-500 rounded-full text-white" onClick={() => updatePost(post)} >
                     Update
                   </button>
                     ) : (

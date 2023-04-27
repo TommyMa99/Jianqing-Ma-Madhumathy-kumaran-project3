@@ -6,9 +6,14 @@ const sharp = require('sharp')
 const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
 const Task = require('../models/task')
 const router = new express.Router()
+const validateRequest = require('../middleware/validate-request.js');
+const validateSchema = require('../middleware/validate-request.js');
+
+
+
 
 // user registration, automatically assigns the user a token.
-router.post('/signup', async (req, res) => {
+router.post('/signup', validateRequest, validateSchema, async (req, res) => {
     const user = new User(req.body)
 
     try {
