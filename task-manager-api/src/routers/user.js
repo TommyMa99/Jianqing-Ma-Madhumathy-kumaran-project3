@@ -6,16 +6,24 @@ const sharp = require('sharp')
 const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
 const Task = require('../models/task')
 const router = new express.Router()
+const validateRequest = require('../middleware/validate-request.js');
+const validateSchema = require('../middleware/validate-request.js');
+
+
+
 
 // user registration, automatically assigns the user a token.
-router.post('/signup', async (req, res) => {
+router.post('/signup', validateRequest, validateSchema, async (req, res) => {
     const user = new User(req.body)
 
     try {
         await user.save()
         sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
-        res.status(201).send({user, token})
+        const { password, ...othersData } = user._doc;
+        res.cookie("access_token", token, {
+          httpOnly: true,
+        }).status(201).json({ user, token, othersData });
     } catch (e) {
         res.status(400).send(e)
     }
@@ -49,7 +57,11 @@ router.post('/users/login', async (req, res, next) => {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         if(!user)  return next(new Error('Incorrect email or password'))
-        res.send({ user, token })
+        const { password, ...othersData } = user._doc;
+
+        res.cookie("access_token", token, {
+          httpOnly: true,
+        }).status(201).json({ user, token, othersData });
     } catch (e) {
         res.status(400).send()
     }

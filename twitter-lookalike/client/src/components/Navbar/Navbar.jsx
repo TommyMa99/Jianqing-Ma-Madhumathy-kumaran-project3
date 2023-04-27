@@ -13,7 +13,7 @@ const Navbar = () => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+  const { currentUser } = useSelector((state) => state.user);
   const loggedIn = useSelector(
     (state) => state.user.currentUser
   )
@@ -28,10 +28,10 @@ const Navbar = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     dispatch(logout());
-    navigate("/signin");
+    navigate("/");
   };
 
-  console.log("user",loggedIn.user.username);
+  console.log("user",loggedIn);
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 my-5 justify-center">
       <div className="mx-auto md:mx-0">
@@ -67,6 +67,13 @@ const Navbar = () => {
               )}
             </div>
           </div>
+          <div>
+              {currentUser != null ? (
+                  <div>
+                    <p className="font-bold text-md text-gray-800">Welcome {currentUser.user.username}!</p>
+                  </div>
+                ): (null) }
+            </div>
         </div>
       </div>
     </div>

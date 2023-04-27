@@ -2,20 +2,23 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-
+import CTweet from "../Tweet/CTweet";
+import Cookies from 'js-cookie';
 
 const ProfileTweet = () => {
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, token } = useSelector((state) => state.user);
     const [posts, setPosts] = useState([]);
     const { id } = useParams();
+    const backend_url = "https://twitter5610-backend.herokuapp.com";
   const dispatch = useDispatch();
-  
+  const isCurrUser = id === currentUser?.user?._id
+
   useEffect(() => {
     async function fetchPosts() {
-      const response = await axios.get(`/tasks/${id}`);
+      const response = await axios.get(backend_url+`/tasks/${id}`);
       const postsWithUserInfo = await Promise.all(
         response.data.map(async post => {
-          const userResponse = await axios.get(`/find/${post.owner}`);
+          const userResponse = await axios.get(backend_url+`/find/${post.owner}`);
           return {
             ...post,
             user: userResponse.data,
@@ -27,12 +30,43 @@ const ProfileTweet = () => {
     fetchPosts();
   }, [currentUser, id]);
 
+  async function deletePost(post){
+    try {
+      if (token != null) {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const deleteTweet = await axios.delete(backend_url+"/tasks/"+post._id, config);
+        window.location.reload(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function updatePost(post){
+    try {
+      if (token != null) {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const updateTweet = await axios.patch(backend_url+"/tasks/"+post._id, config);
+
+        window.location.reload(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <div>
+      {isCurrUser ? (
+        <CTweet />
+      ) : (
+          null
+        )}
+        {/* <p className="font-bold pl-2 my-2">username</p>
       
-        <p className="font-bold pl-2 my-2">username</p>
-      
-
       <form className="border-b-2 pb-6">
         <textarea
           type="text"
@@ -43,7 +77,7 @@ const ProfileTweet = () => {
         <button className="bg-blue-500 text-white py-2 px-4 rounded-full ml-auto">
           Tweet
         </button>
-      </form>
+      </form> */}
       <div className="content-all-tweet">
         <div className="tweet">
           {posts.map(post => (
@@ -62,6 +96,26 @@ const ProfileTweet = () => {
               <img className="mt-2 rounded-2xl border border-gray-100 dark:border-gray-700" src=""/>
               <p className="text-gray-500 text-xs dark:text-gray-400 text-base py-1 my-0.5">{new Date(post.updatedAt).toLocaleString()}</p>
               <div className="border-gray-200 dark:border-gray-600 border border-b-0 my-1"></div>
+              <div className="flex justify-between">
+              <div>
+                {isCurrUser ? (
+                  <button className="px-4 -y-2 bg-yellow-500 rounded-full text-white" onClick={() => deletePost(post)}>
+                    Delete
+                  </button>
+                    ) : (
+                      null
+                    )}
+              </div>
+              <div>
+                {isCurrUser ? (
+                  <button className="px-4 -y-2 bg-yellow-500 rounded-full text-white" onClick={() => updatePost(post)} >
+                    Update
+                  </button>
+                    ) : (
+                      null
+                    )}
+              </div>
+              </div>
             </div>
           </div>
           ))}

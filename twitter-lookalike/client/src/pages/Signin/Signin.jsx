@@ -12,27 +12,22 @@ import axios from "axios";
  
 
 
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const backend_url = 'http://localhost:3001';
-
-
+  const backend_url = 'https://twitter5610-backend.herokuapp.com';
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   
 
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/users/login", { email, password });
+      const res = await axios.post(backend_url+"/users/login", { email, password });
       dispatch(loginSuccess(res.data));
       navigate("/");
     } catch (err) {
@@ -46,7 +41,7 @@ const Signin = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post("/signup", {
+      const res = await axios.post(backend_url+"/signup", {
         username,
         email,
         password,

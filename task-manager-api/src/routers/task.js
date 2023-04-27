@@ -13,8 +13,8 @@ router.post('/createtweet', auth, async (req, res) => {
     })
 
     try {
-        const saved_tweet = await task.save()
-        res.status(201).send(saved_tweet)
+        await task.save()
+        res.status(201).send(task)
     } catch (e) {
         res.status(400).send(e)
     }
@@ -22,9 +22,9 @@ router.post('/createtweet', auth, async (req, res) => {
 
 
 //to get a tweet after loggin in.
-router.get('/tasks/:userId', async (req, res) => {
+router.get('/tasks/:id', async (req, res) => {
     const sort = {}
-    const match = { owner: req.params.userId }
+    const match = { owner: req.params.id }
 
     if (req.query.sortBy) {
         const parts = req.query.sortBy.split(':')
@@ -100,7 +100,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     }
 
     try {
-        const task = await Task.findOne({ _id: req.params.id, owner: req.user._id })
+        const task = await Task.findOne({ _id: req.params.id })
        
         if (!task) {
             return task.status(404).send()
@@ -117,7 +117,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 //delete a tweet.
 router.delete('/tasks/:id', auth, async (req, res) => {
     try {
-        const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
+        const task = await Task.findOneAndDelete({ _id: req.params.id })
 
         if (!task) {
             return res.status(404).send()
@@ -154,7 +154,7 @@ const upload = multer({
     }
 })
 
-router.post('/tasks/:id/avatar', auth, upload.single('avatar'), async (req, res) => {
+router.post('/tasks/:id/avatar', upload.single('avatar'), async (req, res) => {
     const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250, fit: 'fill'}).png().toBuffer()
     try {
         const task = await Task.findOne({ _id: req.params.id, owner: req.user._id })

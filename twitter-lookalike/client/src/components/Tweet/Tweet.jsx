@@ -1,14 +1,20 @@
  import axios from "axios";
 import React, { useEffect, useState } from "react";
+import CTweet from "./CTweet";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 
 const Tweet = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const backend_url = "https://twitter5610-backend.herokuapp.com";
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     async function fetchPosts() {
-      const response = await axios.get('/tasks?sortBy=createdAt:desc');
+      const response = await axios.get(backend_url+'/tasks?sortBy=createdAt:desc');
       const postsWithUserInfo = await Promise.all(
         response.data.map(async post => {
-          const userResponse = await axios.get(`/find/${post.owner}`);
+          const userResponse = await axios.get(backend_url+`/find/${post.owner}`);
           return {
             ...post,
             user: userResponse.data,
@@ -23,20 +29,13 @@ const Tweet = () => {
   return (
     <div>
       
-        <p className="font-bold pl-2 my-2">username</p>
+        <p className="font-bold pl-2 my-2">Explore</p>
+        {currentUser != null ? (
+        <CTweet /> ) :( null)}
       
 
-      <form className="border-b-2 pb-6">
-        <textarea
-          type="text"
-          placeholder="What's happening"
-          maxLength={280}
-          className="bg-slate-200 rounded-lg w-full p-2"
-        ></textarea>
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-full ml-auto">
-          Tweet
-        </button>
-      </form>
+      
+      
       <div className="content-all-tweet">
         <div className="tweet">
           {posts.map(post => (
@@ -45,10 +44,12 @@ const Tweet = () => {
               <div className="flex justify-between">
                 <div className="flex items-center">
                   <img className="h-11 w-11 rounded-full" src="/def_avatar.jpg"/>
+                  <Link to={`/profile/${post.user._id}`}>
                   <div className="ml-1.5 text-sm leading-tight">
                     <span className="text-black dark:text-white font-bold block ">{post.user.username}</span>
                     <span className="text-gray-500 dark:text-gray-400 font-normal block">@{post.user.email}</span>
                   </div>
+                  </Link>
                 </div>
               </div>
               <p className="text-black dark:text-white block text-xl leading-snug mt-3">{post.description}</p>
