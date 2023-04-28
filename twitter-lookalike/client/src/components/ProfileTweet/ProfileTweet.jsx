@@ -4,10 +4,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import CTweet from "../Tweet/CTweet";
 import Cookies from 'js-cookie';
+import Modal from "react-modal";
 
 const ProfileTweet = () => {
     const { currentUser, token } = useSelector((state) => state.user);
+    const [isOpen, setIsOpen] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [inputValue, setInputValue] = useState("");
     const { id } = useParams();
     const backend_url = "https://twitter5610-backend.herokuapp.com";
   const dispatch = useDispatch();
@@ -15,7 +18,7 @@ const ProfileTweet = () => {
 
   useEffect(() => {
     async function fetchPosts() {
-      const response = await axios.get(backend_url+`/tasks/${id}`);
+      const response = await axios.get(backend_url+`/tasks/${id}?sortBy=createdAt:desc`);
       const postsWithUserInfo = await Promise.all(
         response.data.map(async post => {
           const userResponse = await axios.get(backend_url+`/find/${post.owner}`);
@@ -43,6 +46,31 @@ const ProfileTweet = () => {
       console.log(err);
     }
   }
+
+  async function handleConfirmClick(post) {
+    // Do something with the input value, for example:
+    console.log("Input id:", post._id);
+    console.log("Input value:", inputValue);
+    try {
+      if (token != null) {
+        const updateTweet = await axios.patch(
+          backend_url + "/tasks/" + post._id,
+          {
+            description: inputValue
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+        window.location.reload(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    // Close the modal
+    setIsOpen(false);
+  };
+
   return (
     <div>
       {isCurrUser ? (
@@ -67,6 +95,36 @@ const ProfileTweet = () => {
         <div className="tweet">
           {posts.map(post => (
             <div className="bg-gray-50 dark:bg-black p-10 flex items-center justify-center">
+              <Modal
+                isOpen={isOpen}
+                onRequestClose={() => setIsOpen(false)}
+                ariaHideApp={false}
+                className="fixed inset-0 z-50 flex items-center justify-center"
+              >
+                <div className="bg-stone-300	 rounded-lg shadow-lg p-6 max-w-sm mx-auto">
+                  <h2 className="text-lg font-semibold mb-4">Please edit you post</h2>
+                  <input
+                    type="text"
+                    className="border border-gray-400 p-2 rounded w-full mb-4"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                  <div className="flex justify-end">
+                    <button
+                      className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                      onClick={() => handleConfirmClick(post)}
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              </Modal>
             <div className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-800 p-4 rounded-xl border max-w-xl h-full w-full">
               <div className="flex justify-between">
                 <div className="flex items-center">
@@ -93,7 +151,7 @@ const ProfileTweet = () => {
               </div>
               <div>
                 {isCurrUser ? (
-                  <button className="px-4 -y-2 bg-yellow-500 rounded-full text-white">
+                  <button className="px-4 -y-2 bg-yellow-500 rounded-full text-white" onClick={() => setIsOpen(true)}>
                     Update
                   </button>
                     ) : (
@@ -103,6 +161,7 @@ const ProfileTweet = () => {
               </div>
             </div>
           </div>
+          
           ))}
         </div>
         
@@ -110,5 +169,4 @@ const ProfileTweet = () => {
     </div>
   );
 };
-{/* <div key={post._id}>{post.description}</div> */}
 export default ProfileTweet;

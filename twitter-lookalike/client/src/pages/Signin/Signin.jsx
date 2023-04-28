@@ -16,6 +16,7 @@ import axios from "axios";
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
   const backend_url = 'https://twitter5610-backend.herokuapp.com';
   
@@ -45,6 +46,7 @@ const Signin = () => {
         username,
         email,
         password,
+        description,
       });
       dispatch(loginSuccess(res.data));
       navigate("/");
@@ -99,6 +101,12 @@ const Signin = () => {
         onChange={(e) => setPassword(e.target.value)}
         type="password"
         placeholder="password"
+        className="text-xl py-2 rounded-full px-4"
+      />
+      <input
+        onChange={(e) => setDescription(e.target.value)}
+        type="description"
+        placeholder="Optional Description"
         className="text-xl py-2 rounded-full px-4"
       />
 
