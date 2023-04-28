@@ -18,7 +18,7 @@ const ProfileTweet = () => {
 
   useEffect(() => {
     async function fetchPosts() {
-      const response = await axios.get(backend_url+`/tasks/${id}?sortBy=createdAt:desc`);
+      const response = await axios.get(backend_url+`/tasks/${id}?sortBy=updatedAt:desc`);
       const postsWithUserInfo = await Promise.all(
         response.data.map(async post => {
           const userResponse = await axios.get(backend_url+`/find/${post.owner}`);

@@ -11,7 +11,7 @@ const Tweet = () => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     async function fetchPosts() {
-      const response = await axios.get(backend_url+'/tasks?sortBy=createdAt:desc');
+      const response = await axios.get(backend_url+'/tasks?sortBy=updatedAt:desc');
       const postsWithUserInfo = await Promise.all(
         response.data.map(async post => {
           const userResponse = await axios.get(backend_url+`/find/${post.owner}`);
